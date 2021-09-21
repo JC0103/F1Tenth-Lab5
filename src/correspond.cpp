@@ -55,7 +55,7 @@ void getCorrespondence(vector<Point>& old_points, vector<Point>& trans_points, v
 
   //Do for each point
   for(int i = 0; i<n; ++i){
-
+    // try to get the correspondeces between input & output 
     
 
     int best = 0;

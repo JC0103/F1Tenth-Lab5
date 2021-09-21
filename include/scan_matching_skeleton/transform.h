@@ -11,20 +11,25 @@ static const float EPSILON = 0.00001;
 struct Transform {
   float x_disp, y_disp, theta_rot;
 
+  // Constructor
   Transform() : x_disp(0), y_disp(0), theta_rot(0) {}
 
+  // Constructor
   Transform(float x_disp, float y_disp, float theta_rot) :
     x_disp(x_disp), y_disp(y_disp), theta_rot(theta_rot) {}
 
+  // Overloading equal operator in which it will return true when x_disp, y_disp and theta_rot are equals for two Transform
   bool operator==(Transform& t2) {
     return abs(x_disp-t2.x_disp) < EPSILON &&  abs(y_disp-t2.y_disp) < EPSILON &&
            abs(theta_rot - t2.theta_rot) < EPSILON;
   }
 
+  // Overloading not equal operator using the overloaded equal operator
   bool operator!=(Transform& t2) {
     return !(*this == t2);
   }
 
+  // Overloading + operator to return the combined transformation
   Transform operator+(Transform& t2) {
     Eigen::Matrix3f H1 = getMatrix();
     Eigen::Matrix3f H2 = t2.getMatrix();
@@ -37,6 +42,7 @@ struct Transform {
   }
 
   /** keep as a pass-by-value so you can't change the underlying point. */
+  // Apply the transform to a provided point
   Point apply(Point p) {
     float x = p.getX() + x_disp;
     float y = p.getY() + y_disp;
@@ -46,6 +52,7 @@ struct Transform {
     return p;
   }
 
+  // Get transformation as a matrix message
   Eigen::Matrix3f getMatrix() {
     Eigen::Matrix3f mat;
     mat << cos(theta_rot), -sin(theta_rot), x_disp, sin(theta_rot), cos(theta_rot), y_disp, 0, 0, 1;

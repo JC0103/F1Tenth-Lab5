@@ -84,43 +84,43 @@ void updateTransform(vector<Correspondence>& corresponds, Transform& curr_trans)
   // input : curr_trans : A Transform object refernece
   // output : update the curr_trans object. Being a call by reference function, Any changes you make to curr_trans will be reflected in the calling function in the scan_match.cpp program/
 
-// You can change the number of iterations here. More the number of iterations, slower will be the convergence but more accurate will be the results. You need to find the right balance.
-int number_iter = 1;
+  // You can change the number of iterations here. More the number of iterations, slower will be the convergence but more accurate will be the results. You need to find the right balance.
+  int number_iter = 1;
 
-for(int i = 0; i<number_iter; i++){
+  for(int i = 0; i<number_iter; i++){
 
-  //fill in the values of the matrics
-  Eigen::MatrixXf M_i(2, 4);
-  Eigen::Matrix2f C_i;
-  Eigen::Vector2f pi_i;
+    //fill in the values of the matrics
+    Eigen::MatrixXf M_i(2, 4);
+    Eigen::Matrix2f C_i;
+    Eigen::Vector2f pi_i;
 
-  // Fill in the values for the matrices
-  Eigen::Matrix4f M, W;
-  Eigen::MatrixXf g(4, 1);
-  M << 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
-  W << 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1;
-  g << 0, 0, 0, 0;
+    // Fill in the values for the matrices
+    Eigen::Matrix4f M, W;
+    Eigen::MatrixXf g(4, 1);
+    M << 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
+    W << 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1;
+    g << 0, 0, 0, 0;
 
 
-  // Define sub-matrices A, B, D from M
-  Eigen::Matrix2f A, B, D;
+    // Define sub-matrices A, B, D from M
+    Eigen::Matrix2f A, B, D;
 
-  //define S and S_A matrices from the matrices A B and D
-  Eigen::Matrix2f S;
-  Eigen::Matrix2f S_A;
+    //define S and S_A matrices from the matrices A B and D
+    Eigen::Matrix2f S;
+    Eigen::Matrix2f S_A;
 
-  //find the coefficients of the quadratic function of lambda
-  float pow_2; float pow_1; float pow_0;
+    //find the coefficients of the quadratic function of lambda
+    float pow_2; float pow_1; float pow_0;
 
-  // find the value of lambda by solving the equation formed. You can use the greatest real root function
-  float lambda;
+    // find the value of lambda by solving the equation formed. You can use the greatest real root function
+    float lambda;
 
-  //find the value of x which is the vector for translation and rotation
-  Eigen::Vector4f x;
+    //find the value of x which is the vector for translation and rotation
+    Eigen::Vector4f x;
 
-  // Convert from x to new transform
+    // Convert from x to new transform
 
-  float theta = atan2(x(3), x(2));
-  curr_trans= Transform(x(0), x(1), theta);
-}
+    float theta = atan2(x(3), x(2));
+    curr_trans= Transform(x(0), x(1), theta);
+  }
 }

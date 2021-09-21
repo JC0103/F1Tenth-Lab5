@@ -11,7 +11,8 @@
         "/home/jcchia/chia_jing_cheng_ws/src/chia_jing_cheng_lab1/include/**",
         "/home/jcchia/chia_jing_cheng_ws/src/f1tenth_simulator/include/**",
         "/home/jcchia/chia_jing_cheng_ws/src/jchia029_lab2/include/**",
-        "/usr/include/**"
+        "/usr/include/**",
+        "${workspaceFolder}/include/**"
       ],
       "name": "ROS"
     }
