@@ -60,7 +60,10 @@ struct Transform {
   }
 };
 
-
+/** 
+ * @brief Apply transform to the set of points.
+ * @param points Points to be transformed @param t Transformation @param transformed_points container for transformed_points
+ */
 void transformPoints(const vector<Point>& points, Transform& t, vector<Point>& transformed_points);
 
 void updateTransform(vector<Correspondence>& corresponds, Transform& curr_trans);

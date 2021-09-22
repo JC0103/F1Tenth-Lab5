@@ -145,4 +145,8 @@ void getCorrespondence(vector<Point>& old_points, vector<Point>& trans_points, v
 void getNaiveCorrespondence(vector<Point>& old_points, vector<Point>& trans_points, vector<Point>& points,
                                                 vector< vector<int> >& jump_table, vector<Correspondence>& c, float prob);
 
+/**
+ * @brief Computes the jump table based on the previous table and current scan points
+ * @param table previous table @param points current scan points
+ */
 void computeJump(vector< vector<int> >& table, vector<Point>& points);
