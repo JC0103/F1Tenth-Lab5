@@ -85,12 +85,13 @@ void updateTransform(vector<Correspondence>& corresponds, Transform& curr_trans)
   // output : update the curr_trans object. Being a call by reference function, Any changes you make to curr_trans will be reflected in the calling function in the scan_match.cpp program/
 
   // You can change the number of iterations here. More the number of iterations, slower will be the convergence but more accurate will be the results. You need to find the right balance.
-  int number_iter = 1;
+  int number_iter = 10;
 
   for(int i = 0; i<number_iter; i++){
 
     //fill in the values of the matrics
     Eigen::MatrixXf M_i(2, 4);
+    Eigen::MatrixXf n_i(2, 1);
     Eigen::Matrix2f C_i;
     Eigen::Vector2f pi_i;
 
@@ -102,21 +103,114 @@ void updateTransform(vector<Correspondence>& corresponds, Transform& curr_trans)
     g << 0, 0, 0, 0;
 
 
+    for (i=0; i<corresponds.size(); i++){
+      M_i << 1, 0, corresponds[i].p->getX(), -corresponds[i].p->getY(), 0, 1, corresponds[i].p->getY(), corresponds[i].p->getX();
+      n_i = corresponds[i].getNormalNorm();
+      pi_i << corresponds[i].pj1->getX(), corresponds[i].pj1->getY();
+      C_i = n_i*n_i.transpose();
+
+      M += M_i.transpose()*C_i*M_i;
+       
+      g += (-2*pi_i.transpose()*C_i*M_i).transpose();
+    }
+
+
+
+		
     // Define sub-matrices A, B, D from M
     Eigen::Matrix2f A, B, D;
+
 
     //define S and S_A matrices from the matrices A B and D
     Eigen::Matrix2f S;
     Eigen::Matrix2f S_A;
 
+    A << 2*M.block(0,0,2,2);
+    B << 2*M.block(0,2,2,2);
+    D << 2*M.block(2,2,2,2);
+
+    S << D-(B.transpose())*(A.inverse())*B;
+    S_A << (S.determinant())*(S.inverse());
+
+    float f_1, f_2, f_3;
+    Eigen::Matrix4f F_1, F_2, F_3;
+    F_1.setZero(4,4);
+    F_2.setZero(4,4);
+    F_3.setZero(4,4);
+    F_1.topLeftCorner(2,2) = A.inverse()*B*B.transpose()*A.inverse().transpose();
+    F_1.bottomLeftCorner(2,2) = -(A.inverse()*B).transpose();
+    F_1.topRightCorner(2,2) = -A.inverse()*B;
+    F_1.bottomRightCorner(2,2).setIdentity();
+    //cout << F_1;
+    F_2.topLeftCorner(2,2) = A.inverse()*B*S_A*B.transpose()*A.inverse().transpose();
+    F_2.bottomLeftCorner(2,2) = -(A.inverse()*B*S_A).transpose();
+    F_2.topRightCorner(2,2) = -A.inverse()*B*S_A;
+    F_2.bottomRightCorner(2,2) = S_A;
+    //cout << F_2;
+    F_3.topLeftCorner(2,2) = A.inverse()*B*S_A.transpose()*S_A*B.transpose()*A.inverse().transpose();
+    F_3.bottomLeftCorner(2,2) = -(A.inverse()*B*S_A.transpose()*S_A).transpose();
+    F_3.topRightCorner(2,2) = -A.inverse()*B*S_A.transpose()*S_A;
+    F_3.bottomRightCorner(2,2) = S_A.transpose()*S_A;
+    
+    //cout << g;
+    f_1 = (4*g.transpose()*F_1*g)(0);
+    f_2 = (4*g.transpose()*F_2*g)(0);
+    f_3 = (g.transpose()*F_3*g)(0);
+
+
+        // find the value of lambda by solving the equation formed. You can use the greatest real root function
+    // float lambda;
+
+    // //find the value of x which is the vector for translation and rotation
+    // Eigen::Vector4f x;
+
+    float a_1, b_1, c_1, d_1;
+    //cout << S(0,0);
+    a_1 = S(0,0);
+    b_1 = S(0,1);
+    c_1 = S(1,0);
+    d_1 = S(1,1);
+    
+    float A_1,B_1,C_1,D_1,E_1;
+  
+    A_1 = 16;
+    
+    B_1 = 16*(a_1+d_1);
+    C_1 = 16*a_1*d_1 + 4*a_1*a_1 + 4*d_1*d_1 - 8*c_1*b_1 - f_1;
+    D_1 = -4*a_1*b_1*c_1 - 4*b_1*c_1*d_1 + 4*a_1*a_1*d_1 + 4*a_1*d_1*d_1 -f_2;
+    E_1 = a_1*a_1*d_1*d_1 - 2*a_1*b_1*c_1*d_1 + b_1*b_1*c_1*c_1 - f_3;
+
+    //cout << a_1 <<" "<<b_1<<" "<<c_1<< " "<<d_1;
+    float x1=0, x2=0, x3=0, x4=0;
+    //double lambda;
+    //cout << A_1 << " " << B_1 << " " << C_1 << " " << D_1 << " " << E_1;
+    //lambda = greatest_real_root(A_1,B_1,C_1,D_1,E_1);
+    
+    //cout << "C " <<C_1 << endl ;
+
+    float lambda = greatest_real_root(A_1,B_1,C_1,D_1,E_1);
+          
+    // float lambda = x1>x2?x1:x2;
+    // lambda = lambda>x3?lambda:x3;
+    // lambda = lambda>x4?lambda:x4;
+    
+
+    //cout << "\n lambda " << lambda;
+    
     //find the coefficients of the quadratic function of lambda
-    float pow_2; float pow_1; float pow_0;
 
     // find the value of lambda by solving the equation formed. You can use the greatest real root function
-    float lambda;
 
-    //find the value of x which is the vector for translation and rotation
-    Eigen::Vector4f x;
+
+//find the value of x which is the vector for translation and rotation
+    Eigen::MatrixXf x(1,4);
+    
+    x = -((2*M + 2*lambda*W).inverse()).transpose()*g;
+
+  // Convert from x to new transform
+
+    //find the coefficients of the quadratic function of lambda
+    // float pow_2; float pow_1; float pow_0;
 
     // Convert from x to new transform
 
