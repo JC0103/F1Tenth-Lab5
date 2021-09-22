@@ -103,6 +103,7 @@ class ScanProcessor {
       col.r = 0.0; col.b = 0.0; col.g = 1.0; col.a = 1.0;
       points_viz->addPoints(transformed_points, col);
       points_viz->publishPoints();
+      
 
       ROS_INFO("Count: %i", count);
 

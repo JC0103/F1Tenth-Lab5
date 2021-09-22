@@ -107,7 +107,7 @@ find_package(Eigen3 REQUIRED)
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
+ INCLUDE_DIRS include
 #  LIBRARIES emu_imu_scan_matching
    CATKIN_DEPENDS nav_msgs roscpp rospy std_msgs
 #  DEPENDS system_lib

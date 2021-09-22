@@ -25,6 +25,7 @@ void PointVisualizer::publishPoints() {
   ROS_INFO("published dots");
   dots.points.clear();
   dots.colors.clear();
+  ROS_WARN("Publish");
 }
 
 CorrespondenceVisualizer::CorrespondenceVisualizer(ros::Publisher& pub, string ns, string frame_id) : pub(pub), ns(ns),

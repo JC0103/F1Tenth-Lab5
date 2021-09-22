@@ -16,12 +16,13 @@ void getNaiveCorrespondence(vector<Point>& old_points, vector<Point>& trans_poin
       int last_best = -1;
       const int n = trans_points.size();
       const int m = old_points.size();
-      float min_dist = 100000.00;
+      float min_dist = -1;
       int min_index = 0;
       int second_min_index = 0;
 
       //Do for each point
       for(int i = 0; i<n; ++i){
+        min_dist = 10000.0;    //TODO: Ask Michael about this
         for(int j = 0; j<m; ++j){
           float dist = old_points[i].distToPoint2(&trans_points[j]);
           if(dist<min_dist){
