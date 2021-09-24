@@ -22,10 +22,10 @@ void PointVisualizer::addPoints(vector<Point>& points, std_msgs::ColorRGBA color
 void PointVisualizer::publishPoints() {
   dots.header.stamp = ros::Time::now();
   pub.publish(dots);
-  ROS_INFO("published dots");
+  // ROS_INFO("published dots");
   dots.points.clear();
   dots.colors.clear();
-  ROS_WARN("Publish");
+  // ROS_WARN("Publish");
 }
 
 CorrespondenceVisualizer::CorrespondenceVisualizer(ros::Publisher& pub, string ns, string frame_id) : pub(pub), ns(ns),
@@ -54,7 +54,7 @@ void CorrespondenceVisualizer::addCorrespondences(vector<Correspondence> corresp
 void CorrespondenceVisualizer::publishCorrespondences() {
   line_list.header.stamp = ros::Time::now();
   pub.publish(line_list);
-  ROS_INFO("published dots");
+  // ROS_INFO("published dots");
   line_list.points.clear();
   line_list.colors.clear();
 }

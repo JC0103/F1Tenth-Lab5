@@ -75,7 +75,7 @@ class ScanProcessor {
 
       int count = 0;
       computeJump(jump_table, prev_points);
-      ROS_INFO("Starting Optimization");
+      // ROS_INFO("Starting Optimization");
 
       curr_trans = Transform();
 
@@ -105,7 +105,7 @@ class ScanProcessor {
       points_viz->publishPoints();
       
 
-      ROS_INFO("Count: %i", count);
+      // ROS_INFO("Count: %i", count);
 
       this->global_tf = global_tf * curr_trans.getMatrix();
 
