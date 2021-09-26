@@ -7,9 +7,13 @@ This assignment from [F1TENTH](https://f1tenth.org/learn.html) practices on the 
 
 > After you have clone this respository, run the script:
 
-`roslaunch F1tenth-Lab5 lab5.launch`
+`roslaunch F1tenth-Lab5 scan_matching.launch`
 
 > In RViZ, add "Pose" and add the topic /scan_match_location to view the pose estimated.
+
+> Example Output:
+
+<img src="scan_matching.gif">
 
 ## Explanation
 - we have edited the function updateTransform() to find x, the optimization variable which contains the position and orientation transforms to be optimized.

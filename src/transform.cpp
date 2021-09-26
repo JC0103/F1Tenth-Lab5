@@ -89,7 +89,7 @@ void updateTransform(vector<Correspondence>& corresponds, Transform& curr_trans)
   // output : update the curr_trans object. Being a call by reference function, Any changes you make to curr_trans will be reflected in the calling function in the scan_match.cpp program/
 
   // You can change the number of iterations here. More the number of iterations, slower will be the convergence but more accurate will be the results. You need to find the right balance.
-  int number_iter = 5;
+  int number_iter = 2;
 
   for(int i = 0; i<number_iter; i++){
 
